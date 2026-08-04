@@ -1,7 +1,8 @@
+import 'package:dp_expenz_application/screens/on_board_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Inter'),
       title: 'Expenz',
-      home: Scaffold(body: Center(child: Text('data'))),
+      home: OnBoardScreen(),
     );
   }
 }
