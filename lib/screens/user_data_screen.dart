@@ -1,3 +1,5 @@
+import 'package:dp_expenz_application/screens/main_screen.dart';
+import 'package:dp_expenz_application/services/user_service.dart';
 import 'package:dp_expenz_application/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import '../constant/colors.dart';
@@ -217,7 +219,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                             Expanded(
                               child: SwitchListTile(
                                 value: _remmeberMe,
-                                activeColor: kWhite,
+                                activeThumbColor: kWhite,
                                 activeTrackColor: kMainColor,
                                 onChanged: (value) {
                                   setState(() {
@@ -230,7 +232,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                         ),
                         const SizedBox(height: 60),
                         GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             if (_formKey.currentState!.validate()) {
                               //form is valid process data
                               String userName = _nameController.text;
@@ -239,8 +241,21 @@ class _UserDataScreenState extends State<UserDataScreen> {
                               String userConfirmPassword =
                                   _confirmPasswordController.text;
 
-                              print(
-                                "$userName\n$userEmail\n$userPassword\n$userConfirmPassword",
+                              //save the user name and details in the device strorage
+                              await UserService.storeUserDetails(
+                                context: context,
+                                userName: userName,
+                                userEmail: userEmail,
+                                password: userPassword,
+                                confirmPassword: userConfirmPassword,
+                              );
+                            }
+                            if (context.mounted) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const MainScreen(),
+                                ),
                               );
                             }
                           },
