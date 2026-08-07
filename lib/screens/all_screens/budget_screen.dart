@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 class BudgetScreen extends StatefulWidget {
@@ -10,6 +11,10 @@ class BudgetScreen extends StatefulWidget {
 class _BudgetScreenState extends State<BudgetScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text('budgets'),),);
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(children: [Center(child: Text('data'))]),
+      ),
+    );
   }
 }
