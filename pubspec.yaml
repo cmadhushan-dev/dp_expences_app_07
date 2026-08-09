@@ -37,6 +37,7 @@ dependencies:
   smooth_page_indicator: ^2.0.1
   shared_preferences: ^2.5.5
   persistent_bottom_nav_bar: ^6.2.1
+  intl: ^0.20.3
 
 dev_dependencies:
   flutter_test:
