@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 //incoome categary
 enum IncomeCategary { freelance, salary, passive, sales }
 
@@ -14,11 +13,10 @@ final Map<IncomeCategary, String> incomeCategaryImages = {
 
 //categary colors
 final Map<IncomeCategary, Color> incomeCategaryColors = {
-
-  IncomeCategary.freelance:const Color(0xffE57373),
-  IncomeCategary.passive:Colors.green,
-  IncomeCategary.salary:Colors.lightBlue,
-  IncomeCategary.sales:Colors.yellowAccent ,
+  IncomeCategary.freelance: const Color(0xffE57373),
+  IncomeCategary.passive: Colors.green,
+  IncomeCategary.salary: Colors.lightBlue,
+  IncomeCategary.sales: Colors.yellowAccent,
 };
 
 class IncomeModel {
@@ -27,10 +25,43 @@ class IncomeModel {
   final String incomeSubTitle;
   final double incomePrize;
   final DateTime incomeTime;
-  final DateTime eincomeDate;
+  final DateTime incomeDate;
   final IncomeCategary category;
 
-  IncomeModel({required this.id, required this.incomeMainTitle, required this.incomeSubTitle, required this.incomePrize, required this.incomeTime, required this.eincomeDate, required this.category});
+  IncomeModel({
+    required this.id,
+    required this.incomeMainTitle,
+    required this.incomeSubTitle,
+    required this.incomePrize,
+    required this.incomeTime,
+    required this.incomeDate,
+    required this.category,
+  });
 
- 
+  //method to convert the data object to the json object
+  Map<String, dynamic> toJsonMethod() {
+    return {
+      'incomeId':id,
+      'incomeMainTitle':incomeMainTitle,
+      'incomeSubTitle':incomeSubTitle,
+      'incomePrize':incomePrize,
+      'incomeTime':incomeTime.toIso8601String(),
+      'incomeDate':incomeDate.toIso8601String(),
+      'incomeCategory':category.index,
+
+    };
+  }
+
+  //method to convert the json data to the dart object
+  factory IncomeModel.fromJsonMethod(Map<String,dynamic> jsonIncomeData )
+  {
+    return IncomeModel(
+      id: jsonIncomeData['incomeId'],
+      incomeMainTitle: jsonIncomeData['incomeMainTitle'],
+      incomeSubTitle: jsonIncomeData['incomeSubTitle'],
+      incomePrize: jsonIncomeData['incomePrize'], 
+      incomeTime: DateTime.parse(jsonIncomeData['incomeTime']),
+      incomeDate: DateTime.parse(jsonIncomeData['incomeDate']), 
+      category: IncomeCategary.values[jsonIncomeData['incomeCategory']]);
+  }
 }
