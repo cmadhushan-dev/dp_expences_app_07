@@ -1,12 +1,14 @@
 import 'package:dp_expenz_application/model/expence_model.dart';
 import 'package:dp_expenz_application/model/income_model.dart';
+import 'package:dp_expenz_application/services/expences_services.dart';
 import 'package:dp_expenz_application/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../constant/colors.dart';
 
 class AddNewScreen extends StatefulWidget {
-  const AddNewScreen({super.key});
+  final Function(ExpenceModel) addExpences;
+  const AddNewScreen({super.key, required this.addExpences});
 
   @override
   State<AddNewScreen> createState() => _AddNewScreenState();
@@ -368,9 +370,31 @@ class _AddNewScreenState extends State<AddNewScreen> {
                         const SizedBox(height: 12),
                         const Divider(color: kLightGrey, thickness: 5),
                         const SizedBox(height: 12),
-                        CustomButton(
-                          buttonColor: _selectedMethod == 0 ? kRed : kGreen,
-                          buttonText: 'Add',
+                        //submit button
+                        GestureDetector(
+                          onTap: () async {
+                            //save the expence or income data to the shared prefernce
+                            List<ExpenceModel> lodedExpences =
+                                await ExpencesServices().loadExpences();
+
+                            //create a expences to store
+                            ExpenceModel expenceForStore = ExpenceModel(
+                              id: lodedExpences.length + 1,
+                              expenceMainTitle: _titleController.text,
+                              expenceSubTitle: _descriptionController.text,
+                              expencePrize: _amountController.text.isEmpty
+                                  ? 0
+                                  : double.parse(_amountController.text),
+                              expenceTime: _selestedDate,
+                              expenceDate: _timeNow,
+                              category: _expenceCatagory,
+                            );
+                            widget.addExpences(expenceForStore);
+                          },
+                          child: CustomButton(
+                            buttonColor: _selectedMethod == 0 ? kRed : kGreen,
+                            buttonText: 'Add',
+                          ),
                         ),
                       ],
                     ),

@@ -1,9 +1,11 @@
 import 'package:dp_expenz_application/constant/colors.dart';
+import 'package:dp_expenz_application/model/expence_model.dart';
 import 'package:dp_expenz_application/screens/all_screens/add_new_screen.dart';
 import 'package:dp_expenz_application/screens/all_screens/budget_screen.dart';
 import 'package:dp_expenz_application/screens/all_screens/home_screen.dart';
 import 'package:dp_expenz_application/screens/all_screens/profile_screen.dart';
 import 'package:dp_expenz_application/screens/all_screens/transactions_screen.dart';
+import 'package:dp_expenz_application/services/expences_services.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
@@ -17,10 +19,39 @@ class _MainScreenState extends State<MainScreen> {
   //variable fro track the current page
   int _currentPage = 0;
 
+  //list for fill the xpences
+  List<ExpenceModel> expencesList = [];
+  //function to fetch expences
+  void fetchAllExpences() async {
+    List<ExpenceModel> lodedExpences = await ExpencesServices().loadExpences();
+    setState(() {
+      expencesList = lodedExpences;
+      print(expencesList.length);
+    });
+  }
+
+  //function to add new expences
+  void newExpencesAdding(ExpenceModel newExpences) {
+    ExpencesServices.saveDataToTheSharedPrefences(newExpences, context);
+
+    //update the list of expences
+    setState(() {
+      expencesList.add(newExpences);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      fetchAllExpences();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
-      const AddNewScreen(),
+      AddNewScreen(addExpences: newExpencesAdding),
       const HomeScreen(),
       const TransactionsScreen(),
       const BudgetScreen(),
