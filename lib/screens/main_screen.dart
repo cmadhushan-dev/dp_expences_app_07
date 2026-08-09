@@ -1,12 +1,15 @@
 import 'package:dp_expenz_application/constant/colors.dart';
 import 'package:dp_expenz_application/model/expence_model.dart';
+import 'package:dp_expenz_application/model/income_model.dart';
 import 'package:dp_expenz_application/screens/all_screens/add_new_screen.dart';
 import 'package:dp_expenz_application/screens/all_screens/budget_screen.dart';
 import 'package:dp_expenz_application/screens/all_screens/home_screen.dart';
 import 'package:dp_expenz_application/screens/all_screens/profile_screen.dart';
 import 'package:dp_expenz_application/screens/all_screens/transactions_screen.dart';
 import 'package:dp_expenz_application/services/expences_services.dart';
+import 'package:dp_expenz_application/services/income_service.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -19,14 +22,38 @@ class _MainScreenState extends State<MainScreen> {
   //variable fro track the current page
   int _currentPage = 0;
 
-  //list for fill the xpences
+  /* INCOMES HANDALING SECTION
+         BY SHARED PREFERNCES*/
+
+  //list to hold the incomes
+  List<IncomeModel> incomes = [];
+
+  //function to fetch the all incomes
+  void fetchAllIncomes() async {
+    //get the all data from the service class
+    List<IncomeModel> loadIncomes = await IncomeService.loadtheIncomes();
+    setState(() {
+      incomes = loadIncomes;
+      print("${incomes.length} income");
+    });
+  }
+
+  //function to add a new income
+  void addNewincome(IncomeModel income) {
+    IncomeService.saveDataInSharedPrefernces(income, context);
+  }
+
+  /* EXPENCES HANDALING SECTION
+         BY SHARED PREFERNCES*/
+
+  //list for fill the expences
   List<ExpenceModel> expencesList = [];
   //function to fetch expences
   void fetchAllExpences() async {
     List<ExpenceModel> lodedExpences = await ExpencesServices().loadExpences();
     setState(() {
       expencesList = lodedExpences;
-      print(expencesList.length);
+      print("${expencesList.length} expences");
     });
   }
 
@@ -45,13 +72,14 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     setState(() {
       fetchAllExpences();
+      fetchAllIncomes();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
-      AddNewScreen(addExpences: newExpencesAdding),
+      AddNewScreen(addExpences: newExpencesAdding, addincome: addNewincome),
       const HomeScreen(),
       const TransactionsScreen(),
       const BudgetScreen(),

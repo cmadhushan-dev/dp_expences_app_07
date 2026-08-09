@@ -1,14 +1,20 @@
 import 'package:dp_expenz_application/model/expence_model.dart';
 import 'package:dp_expenz_application/model/income_model.dart';
 import 'package:dp_expenz_application/services/expences_services.dart';
+import 'package:dp_expenz_application/services/income_service.dart';
 import 'package:dp_expenz_application/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../constant/colors.dart';
 
 class AddNewScreen extends StatefulWidget {
+  final Function(IncomeModel) addincome;
   final Function(ExpenceModel) addExpences;
-  const AddNewScreen({super.key, required this.addExpences});
+  const AddNewScreen({
+    super.key,
+    required this.addExpences,
+    required this.addincome,
+  });
 
   @override
   State<AddNewScreen> createState() => _AddNewScreenState();
@@ -37,6 +43,15 @@ class _AddNewScreenState extends State<AddNewScreen> {
     _titleController.dispose();
     _descriptionController.dispose();
     _amountController.dispose();
+  }
+
+  //function for clearing the input fields
+  void clearInputField() {
+    Future.delayed(const Duration(seconds: 3), () {
+      _titleController.clear();
+      _descriptionController.clear();
+      _amountController.clear();
+    });
   }
 
   @override
@@ -373,23 +388,52 @@ class _AddNewScreenState extends State<AddNewScreen> {
                         //submit button
                         GestureDetector(
                           onTap: () async {
-                            //save the expence or income data to the shared prefernce
-                            List<ExpenceModel> lodedExpences =
-                                await ExpencesServices().loadExpences();
+                            if (_selectedMethod == 0) {
+                              /*EXPENC FUNCTIONALITY
+                                       */
+                              //save the expence  data to the shared prefernce
+                              List<ExpenceModel> lodedExpences =
+                                  await ExpencesServices().loadExpences();
 
-                            //create a expences to store
-                            ExpenceModel expenceForStore = ExpenceModel(
-                              id: lodedExpences.length + 1,
-                              expenceMainTitle: _titleController.text,
-                              expenceSubTitle: _descriptionController.text,
-                              expencePrize: _amountController.text.isEmpty
-                                  ? 0
-                                  : double.parse(_amountController.text),
-                              expenceTime: _selestedDate,
-                              expenceDate: _timeNow,
-                              category: _expenceCatagory,
-                            );
-                            widget.addExpences(expenceForStore);
+                              //create a expences to store
+                              ExpenceModel expenceForStore = ExpenceModel(
+                                id: lodedExpences.length + 1,
+                                expenceMainTitle: _titleController.text,
+                                expenceSubTitle: _descriptionController.text,
+                                expencePrize: _amountController.text.isEmpty
+                                    ? 0
+                                    : double.parse(_amountController.text),
+                                expenceTime: _selestedDate,
+                                expenceDate: _timeNow,
+                                category: _expenceCatagory,
+                              );
+                              //passed the value to the addExpencesfunction
+                              widget.addExpences(expenceForStore);
+                              clearInputField();
+                            } else {
+                              /*INCOME FUNCTIONALITY
+                                */
+                              //get the all incomes from the shared prefernces
+                              List<IncomeModel> loadIncomes =
+                                  await IncomeService.loadtheIncomes();
+
+                              //create a incomes to the store
+                              IncomeModel incomeForStore = IncomeModel(
+                                id: loadIncomes.length + 1,
+                                incomeMainTitle: _titleController.text,
+                                incomeSubTitle: _descriptionController.text,
+                                incomePrize: _amountController.text.isEmpty
+                                    ? 0
+                                    : double.parse(_amountController.text),
+                                incomeTime: _selestedDate,
+                                incomeDate: _timeNow,
+                                category: _incomeCategory,
+                              );
+
+                              //passed the value to the addIncomesfunction
+                              widget.addincome(incomeForStore);
+                              clearInputField();
+                            }
                           },
                           child: CustomButton(
                             buttonColor: _selectedMethod == 0 ? kRed : kGreen,

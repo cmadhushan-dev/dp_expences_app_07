@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ExpencesServices {
   //list of expences
-  List<ExpenceModel> expencesList = [];
   //defin the key for storing expences in shared preferences
   static const String _expenceKey = 'expences';
 
@@ -42,7 +41,7 @@ class ExpencesServices {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Expences Added Succsfully..'),
+            content: Text('Expences Added Succsfullyy..'),
             duration: Duration(seconds: 2),
           ),
         );
