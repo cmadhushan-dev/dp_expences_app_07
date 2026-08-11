@@ -9,7 +9,6 @@ import 'package:dp_expenz_application/screens/all_screens/transactions_screen.da
 import 'package:dp_expenz_application/services/expences_services.dart';
 import 'package:dp_expenz_application/services/income_service.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -25,29 +24,38 @@ class _MainScreenState extends State<MainScreen> {
   /* INCOMES HANDALING SECTION
          BY SHARED PREFERNCES*/
 
-  //list to hold the incomes
-  List<IncomeModel> incomes = [];
-
   //function to fetch the all incomes
   void fetchAllIncomes() async {
     //get the all data from the service class
     List<IncomeModel> loadIncomes = await IncomeService.loadtheIncomes();
     setState(() {
-      incomes = loadIncomes;
-      print("${incomes.length} income");
+      incomesList = loadIncomes;
+      print("${incomesList.length} income");
     });
   }
 
   //function to add a new income
   void addNewincome(IncomeModel income) {
+    //fisrt save the incomes in to the shared prefernces
     IncomeService.saveDataInSharedPrefernces(income, context);
+    print('addNewincome');
+    setState(() {
+      //add to list to the show in the uerinterface
+      incomesList.add(income);
+    });
+  }
+
+  //function to the delete a income
+  void deleteAIncome(IncomeModel income) {
+    IncomeService.deleteAIncome(income.id, context);
+    setState(() {
+      incomesList.remove(income);
+    });
   }
 
   /* EXPENCES HANDALING SECTION
          BY SHARED PREFERNCES*/
 
-  //list for fill the expences
-  List<ExpenceModel> expencesList = [];
   //function to fetch expences
   void fetchAllExpences() async {
     List<ExpenceModel> lodedExpences = await ExpencesServices().loadExpences();
@@ -59,13 +67,28 @@ class _MainScreenState extends State<MainScreen> {
 
   //function to add new expences
   void newExpencesAdding(ExpenceModel newExpences) {
+     //add to the shared prefernces
     ExpencesServices.saveDataToTheSharedPrefences(newExpences, context);
-
-    //update the list of expences
+   
     setState(() {
+      //add to list to the show in the uerinterface
       expencesList.add(newExpences);
     });
   }
+
+  //function to remove a expence
+  void removeExpence(ExpenceModel expence) {
+    ExpencesServices.deleteExpense(expence.id, context);
+    setState(() {
+
+      expencesList.remove(expence);
+    });
+  }
+
+  //list to hold the incomes
+  List<IncomeModel> incomesList = [];
+  //list for fill the expences
+  List<ExpenceModel> expencesList = [];
 
   @override
   void initState() {
@@ -79,9 +102,14 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
-      AddNewScreen(addExpences: newExpencesAdding, addincome: addNewincome),
       const HomeScreen(),
-      const TransactionsScreen(),
+      TransactionsScreen(
+        incomeList: incomesList,
+        onDissmissedIncome: deleteAIncome,
+        expencesList: expencesList,
+        onDissmissedExpense: removeExpence,
+      ),
+      AddNewScreen(addExpences: newExpencesAdding, addincome: addNewincome),
       const BudgetScreen(),
       const ProfileScreen(),
     ];

@@ -71,4 +71,48 @@ class ExpencesServices {
     }
     return loadedExpences;
   }
+
+  //delete a Expence via using  the id
+
+static  Future<void> deleteExpense(int id, BuildContext context) async {
+    try {
+      //instance
+
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      List<String>? excitingExpences = pref.getStringList(_expenceKey);
+      //convert to the dart list
+      List<ExpenceModel> excistingExpenceObjects = [];
+      if (excitingExpences != null) {
+        excistingExpenceObjects = excitingExpences
+            .map((e) => ExpenceModel.fromJson(json.decode(e)))
+            .toList();
+
+        excistingExpenceObjects.removeWhere((expence) => expence.id == id);
+        List<String> updatedExpences = [];
+        updatedExpences = excistingExpenceObjects
+            .map((element) => json.encode(element.toJson()))
+            .toList();
+        //save the updated list of expences to shared prefernces
+        await pref.setStringList(_expenceKey, updatedExpences);
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Expence Delete sucfully..'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+      }
+    } catch (err) {
+      print(err.toString());
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Fail to delete  expences..'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+  }
 }

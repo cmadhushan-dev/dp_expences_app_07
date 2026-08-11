@@ -61,8 +61,8 @@ class ExpenceModel {
       expenceMainTitle: jsonData['expenceTitle'],
       expenceSubTitle: jsonData['expenceSubtitle'],
       expencePrize: jsonData['expencePrize'],
-      expenceTime:DateTime.parse( jsonData['expenceTime']),
-      expenceDate: DateTime.parse( jsonData['expenceDate']),
+      expenceTime: DateTime.parse(jsonData['expenceTime']),
+      expenceDate: DateTime.parse(jsonData['expenceDate']),
       category: ExpenceCateraries.values[jsonData['expenceCategory']],
     );
   }
