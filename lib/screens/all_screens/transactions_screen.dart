@@ -65,35 +65,54 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                     padding: const EdgeInsets.only(left: kDefaulPadding),
                     child: Column(
                       children: [
-                        ListView.builder(
-                          itemCount: widget.expencesList.length,
-                          addAutomaticKeepAlives: false,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            final expence = widget.expencesList[index];
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 6),
-                              child: Dismissible(
-                                key: ValueKey(expence),
-                                onDismissed: (direction) {
-                                  setState(() {
-                                    widget.onDissmissedExpense(expence);
-                                  });
-                                },
-                                direction: DismissDirection.startToEnd,
-                                child: ExpencesCard(
-                                  amount: expence.expencePrize,
-                                  mainTitle: expence.expenceMainTitle,
-                                  subtitle: expence.expenceSubTitle,
-                                  createdAt: expence.expenceTime,
-                                  expencesCategaory: expence.category,
+                        widget.expencesList.isEmpty
+                            ? const Padding(
+                                padding: EdgeInsets.only(top: 100),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.note_add),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      'Add Some Expences To See Here ',
+                                      style: TextStyle(
+                                        color: kBlack,
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
                                 ),
+                              )
+                            : ListView.builder(
+                                itemCount: widget.expencesList.length,
+                                addAutomaticKeepAlives: false,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  final expence = widget.expencesList[index];
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 6),
+                                    child: Dismissible(
+                                      key: ValueKey(expence),
+                                      onDismissed: (direction) {
+                                        setState(() {
+                                          widget.onDissmissedExpense(expence);
+                                        });
+                                      },
+                                      direction: DismissDirection.startToEnd,
+                                      child: ExpencesCard(
+                                        amount: expence.expencePrize,
+                                        mainTitle: expence.expenceMainTitle,
+                                        subtitle: expence.expenceSubTitle,
+                                        createdAt: expence.expenceTime,
+                                        expencesCategaory: expence.category,
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
-                        ),
                       ],
                     ),
                   ),
@@ -122,35 +141,54 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                     padding: const EdgeInsets.only(left: kDefaulPadding),
                     child: Column(
                       children: [
-                        ListView.builder(
-                          itemCount: widget.incomeList.length,
-                          addAutomaticKeepAlives: false,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            final income = widget.incomeList[index];
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 6),
-                              child: Dismissible(
-                                key: ValueKey(income),
-                                onDismissed: (direction) {
-                                  setState(() {
-                                    widget.onDissmissedIncome(income);
-                                  });
-                                },
-                                direction: DismissDirection.startToEnd,
-                                child: IncomeCard(
-                                  amount: income.incomePrize,
-                                  mainTitle: income.incomeMainTitle,
-                                  subtitle: income.incomeSubTitle,
-                                  createdAt: income.incomeTime,
-                                  incomeCategaries: income.category,
+                        widget.incomeList.isEmpty
+                            ? const Padding(
+                                padding: EdgeInsets.only(top: 100),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.note_add),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      'Add Some Incomes To See Here',
+                                      style: TextStyle(
+                                        color: kBlack,
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
                                 ),
+                              )
+                            : ListView.builder(
+                                itemCount: widget.incomeList.length,
+                                addAutomaticKeepAlives: false,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  final income = widget.incomeList[index];
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 6),
+                                    child: Dismissible(
+                                      key: ValueKey(income),
+                                      onDismissed: (direction) {
+                                        setState(() {
+                                          widget.onDissmissedIncome(income);
+                                        });
+                                      },
+                                      direction: DismissDirection.startToEnd,
+                                      child: IncomeCard(
+                                        amount: income.incomePrize,
+                                        mainTitle: income.incomeMainTitle,
+                                        subtitle: income.incomeSubTitle,
+                                        createdAt: income.incomeTime,
+                                        incomeCategaries: income.category,
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
-                        ),
                       ],
                     ),
                   ),

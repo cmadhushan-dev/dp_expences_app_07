@@ -10,10 +10,7 @@ class LineChartSample extends StatefulWidget {
 }
 
 class _LineChartSampleState extends State<LineChartSample> {
-  List<Color> gradientColors = [
-    kMainColor,
-    kMainColor.withOpacity(0.5),
-  ];
+  List<Color> gradientColors = [kMainColor, kMainColor.withOpacity(0.5)];
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +25,7 @@ class _LineChartSampleState extends State<LineChartSample> {
               top: 12,
               bottom: 12,
             ),
-            child: LineChart(
-              mainData(),
-            ),
+            child: LineChart(mainData()),
           ),
         ),
       ],
@@ -59,10 +54,7 @@ class _LineChartSampleState extends State<LineChartSample> {
         break;
     }
 
-    return SideTitleWidget(
-      meta: meta,
-      child: text,
-    );
+    return SideTitleWidget(meta: meta, child: text);
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
@@ -96,9 +88,7 @@ class _LineChartSampleState extends State<LineChartSample> {
         rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
-        topTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
+        topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
@@ -116,9 +106,7 @@ class _LineChartSampleState extends State<LineChartSample> {
           ),
         ),
       ),
-      borderData: FlBorderData(
-        show: false,
-      ),
+      borderData: FlBorderData(show: false),
       minX: 0,
       maxX: 11,
       minY: 0,
@@ -135,14 +123,10 @@ class _LineChartSampleState extends State<LineChartSample> {
             FlSpot(11, 4),
           ],
           isCurved: true,
-          gradient: LinearGradient(
-            colors: gradientColors,
-          ),
+          gradient: LinearGradient(colors: gradientColors),
           barWidth: 5,
           isStrokeCapRound: false,
-          dotData: const FlDotData(
-            show: false,
-          ),
+          dotData: const FlDotData(show: false),
           belowBarData: BarAreaData(
             show: true,
             gradient: LinearGradient(

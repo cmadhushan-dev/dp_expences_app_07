@@ -26,9 +26,9 @@ class ExpencesCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: kGrey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 10,
+            color: kGrey.withOpacity(0.2),
+            spreadRadius: 3,
+            blurRadius: 2,
             offset: const Offset(0, 1),
           ),
         ],

@@ -116,10 +116,51 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  //calculte the total of the expences
+  Map<ExpenceCateraries, double> calculteExpenceCatagires() {
+    Map<ExpenceCateraries, double> categoryTotal = {
+      ExpenceCateraries.food: 0,
+      ExpenceCateraries.health: 0,
+      ExpenceCateraries.shopping: 0,
+      ExpenceCateraries.subscription: 0,
+      ExpenceCateraries.transport: 0,
+    };
+
+    for (ExpenceModel expence in expencesList) {
+      categoryTotal[expence.category] =
+          categoryTotal[expence.category]! + expence.expencePrize;
+    }
+    return categoryTotal;
+  }
+
+  //calculte the total of the Income categaries
+  Map<IncomeCategary, double> calculteIncomeCatagires() {
+    Map<IncomeCategary, double> categoryTotal = {
+      IncomeCategary.freelance: 0,
+      IncomeCategary.passive: 0,
+      IncomeCategary.salary: 0,
+      IncomeCategary.sales: 0,
+    };
+
+    for (IncomeModel income in incomesList) {
+      categoryTotal[income.category] =
+          categoryTotal[income.category]! + income.incomePrize;
+    }
+    return categoryTotal;
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
-      HomeScreen(expencesTotal: calTheTotalOftheExpences(),incomeTotal: calTheTotalOfTheIncome(),),
+      BudgetScreen(
+        expenceCategoryTotals: calculteExpenceCatagires(),
+        incomeCtegoryTotal: calculteIncomeCatagires(),
+      ),
+      HomeScreen(
+        expences: expencesList,
+        expencesTotal: calTheTotalOftheExpences(),
+        incomeTotal: calTheTotalOfTheIncome(),
+      ),
       TransactionsScreen(
         incomeList: incomesList,
         onDissmissedIncome: deleteAIncome,
@@ -127,7 +168,7 @@ class _MainScreenState extends State<MainScreen> {
         onDissmissedExpense: removeExpence,
       ),
       AddNewScreen(addExpences: newExpencesAdding, addincome: addNewincome),
-      const BudgetScreen(),
+
       const ProfileScreen(),
     ];
 
