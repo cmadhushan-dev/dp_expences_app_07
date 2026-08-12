@@ -55,11 +55,15 @@ class _ReusbleHomePageCardState extends State<ReusbleHomePageCard> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                Text(
-                  "\$${widget.subTitelPrice}",
-                  style: const TextStyle(
-                    color: kWhite,
-                    fontWeight: FontWeight.w600,
+                SizedBox(
+                  width: 80,
+                  child: Text(
+                    "\$${widget.subTitelPrice}",
+                    style: const TextStyle(
+                      color: kWhite,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],

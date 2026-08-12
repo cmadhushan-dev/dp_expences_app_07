@@ -67,9 +67,9 @@ class _MainScreenState extends State<MainScreen> {
 
   //function to add new expences
   void newExpencesAdding(ExpenceModel newExpences) {
-     //add to the shared prefernces
+    //add to the shared prefernces
     ExpencesServices.saveDataToTheSharedPrefences(newExpences, context);
-   
+
     setState(() {
       //add to list to the show in the uerinterface
       expencesList.add(newExpences);
@@ -80,9 +80,26 @@ class _MainScreenState extends State<MainScreen> {
   void removeExpence(ExpenceModel expence) {
     ExpencesServices.deleteExpense(expence.id, context);
     setState(() {
-
       expencesList.remove(expence);
     });
+  }
+
+  //function to calculate the total of the expences
+  double calTheTotalOftheExpences() {
+    double total = 0;
+    for (int i = 0; i < expencesList.length; i++) {
+      total = expencesList[i].expencePrize + total;
+    }
+    return total;
+  }
+
+  //function to calculte the  total of the incomes
+  double calTheTotalOfTheIncome() {
+    double totalIncome = 0;
+    for (int i = 0; i < incomesList.length; i++) {
+      totalIncome += incomesList[i].incomePrize;
+    }
+    return totalIncome;
   }
 
   //list to hold the incomes
@@ -102,7 +119,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
-      const HomeScreen(),
+      HomeScreen(expencesTotal: calTheTotalOftheExpences(),incomeTotal: calTheTotalOfTheIncome(),),
       TransactionsScreen(
         incomeList: incomesList,
         onDissmissedIncome: deleteAIncome,
