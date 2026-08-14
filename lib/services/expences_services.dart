@@ -74,7 +74,7 @@ class ExpencesServices {
 
   //delete a Expence via using  the id
 
-static  Future<void> deleteExpense(int id, BuildContext context) async {
+  static Future<void> deleteExpense(int id, BuildContext context) async {
     try {
       //instance
 
@@ -109,6 +109,32 @@ static  Future<void> deleteExpense(int id, BuildContext context) async {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Fail to delete  expences..'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+  }
+
+  //delete all sxpences from shared prefernces
+  static Future<void> deleteAllExpences(BuildContext context) async {
+    try {
+      //instance of the shared preferences
+      SharedPreferences pres = await SharedPreferences.getInstance();
+      await pres.remove(_expenceKey);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('All Expences Deleted'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (error) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Errr Deleting Expences'),
             duration: Duration(seconds: 2),
           ),
         );

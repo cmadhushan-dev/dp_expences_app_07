@@ -56,4 +56,14 @@ class UserService {
     String? userEmail = pres.getString('userEmail');
     return {"userName": userName!, "userEmail": userEmail!};
   }
+
+//remove the user from shared prfernces
+  static Future<void> removeTheUser() async {
+    //instance of the shared preferences
+    SharedPreferences pres = await SharedPreferences.getInstance();
+    await pres.remove('userName');
+    await pres.remove('userEmail');
+  }
+
+ 
 }

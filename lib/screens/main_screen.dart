@@ -152,10 +152,6 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
-      BudgetScreen(
-        expenceCategoryTotals: calculteExpenceCatagires(),
-        incomeCtegoryTotal: calculteIncomeCatagires(),
-      ),
       HomeScreen(
         expences: expencesList,
         expencesTotal: calTheTotalOftheExpences(),
@@ -168,7 +164,10 @@ class _MainScreenState extends State<MainScreen> {
         onDissmissedExpense: removeExpence,
       ),
       AddNewScreen(addExpences: newExpencesAdding, addincome: addNewincome),
-
+      BudgetScreen(
+        expenceCategoryTotals: calculteExpenceCatagires(),
+        incomeCtegoryTotal: calculteIncomeCatagires(),
+      ),
       const ProfileScreen(),
     ];
 
